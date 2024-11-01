@@ -67,6 +67,52 @@ Try these endpoints:
 - `http://your-external-ip:9443/httpbin/headers`
 - `http://your-external-ip:9443/httpbin/ip`
 
+## Adding KasmVNC Container (Subdomain Routing)
+
+1. In Portainer, go to "Containers" and click "+ Add container"
+
+2. Use the following settings:
+   - Name: ubuntu1
+   - Image: kasmweb/ubuntu-jammy-desktop:1.14.0
+   - Network: Select the "traefik-public" network
+
+3. Add these environment variables:
+
+```
+KASM_NO_SSL: true
+KASM_SSL_CERT_TYPE: none
+VNC_PW: your_secure_password
+KASM_SERVER_ADDRESS: 0.0.0.0
+```
+4. Add these labels:
+```
+traefik.enable: true
+traefik.http.routers.ubuntu1.rule: Host(ubuntu1.localhost)
+traefik.http.routers.ubuntu1.entrypoints: web
+traefik.http.services.ubuntu1.loadbalancer.server.port: 6901
+traefik.http.services.ubuntu1.loadbalancer.server.scheme: https
+traefik.http.routers.ubuntu1.service: ubuntu1
+```
+5. Map port (optional, for direct access testing):
+
+## Testing KasmVNC
+For KasmVNC (subdomain routing):
+```
+http://ubuntu1.localhost:9443
+```
+Default credentials:
+```
+- Username: kasm_user
+- Password: (set in VNC_PW environment variable)
+```
+
+## Adding Additional KasmVNC Containers
+
+For each additional KasmVNC container:
+1. Follow the same steps as above
+2. Change the container name (e.g., ubuntu2)
+3. Update the labels to use a different subdomain:
+
 ## Notes
 
 - This setup uses HTTP. For production use, configure HTTPS.

@@ -6,8 +6,11 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--serversTransport.insecureSkipVerify=true"  # Add this line
     ports:
       - "9443:80"  # Map external port 9443 to internal port 80
+      - "9444:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
