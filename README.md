@@ -94,7 +94,10 @@ traefik.http.services.ubuntu1.loadbalancer.server.scheme: https
 traefik.http.routers.ubuntu1.service: ubuntu1
 ```
 5. Map port (optional, for direct access testing):
-
+```
+- Host: 6901
+- Container: 6901
+```
 ## Testing KasmVNC
 For KasmVNC (subdomain routing):
 ```
